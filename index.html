@@ -7,9 +7,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;background:#f5f5f3;color:#1a1a1a;min-height:100vh}
-:root{--bg:#ffffff;--bg2:#f1efe8;--bg3:#e8e6de;--txt:#1a1a1a;--txt2:#5f5e5a;--txt3:#888780;--border:rgba(0,0,0,0.12);--border2:rgba(0,0,0,0.22);--r:8px;--rl:12px}
-
-/* ロック画面 */
+:root{--bg:#ffffff;--bg2:#f1efe8;--txt:#1a1a1a;--txt2:#5f5e5a;--txt3:#888780;--border:rgba(0,0,0,0.12);--border2:rgba(0,0,0,0.22);--r:8px;--rl:12px}
 #lock-screen{position:fixed;inset:0;background:#f5f5f3;display:flex;align-items:center;justify-content:center;z-index:100}
 .lock-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--rl);padding:2rem 1.75rem;width:100%;max-width:340px;margin:1rem}
 .lock-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:1.75rem}
@@ -17,46 +15,40 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku
 .lock-title{font-size:18px;font-weight:500;color:var(--txt)}
 .lock-sub{font-size:13px;color:var(--txt2);margin-bottom:1.5rem;text-align:center;line-height:1.6}
 .lock-input-wrap{position:relative;margin-bottom:1rem}
-.lock-input{width:100%;font-size:15px;padding:10px 40px 10px 12px;border-radius:var(--r);border:0.5px solid var(--border2);background:var(--bg2);color:var(--txt);outline:none;font-family:inherit;letter-spacing:0.1em}
+.lock-input{width:100%;font-size:15px;padding:10px 40px 10px 12px;border-radius:var(--r);border:0.5px solid var(--border2);background:var(--bg2);color:var(--txt);outline:none;font-family:inherit;letter-spacing:0.1em;-webkit-appearance:none}
 .lock-input:focus{border-color:#185FA5}
 .lock-input.error{border-color:#E24B4A;background:#FCEBEB}
-.eye-btn{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:none;background:none;cursor:pointer;padding:4px;color:var(--txt2)}
-.lock-btn{width:100%;padding:11px;font-size:15px;font-weight:500;border:none;border-radius:var(--r);background:#185FA5;color:#E6F1FB;cursor:pointer;font-family:inherit;transition:opacity 0.15s}
-.lock-btn:hover{opacity:0.85}
+.eye-btn{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:none;background:none;cursor:pointer;padding:4px;color:var(--txt2);-webkit-appearance:none}
+.lock-btn{width:100%;padding:11px;font-size:15px;font-weight:500;border:none;border-radius:var(--r);background:#185FA5;color:#E6F1FB;cursor:pointer;font-family:inherit;-webkit-appearance:none}
 .lock-btn:active{opacity:0.7}
 .lock-error{font-size:13px;color:#A32D2D;text-align:center;margin-top:10px;min-height:20px}
 .lock-hint{font-size:12px;color:var(--txt3);text-align:center;margin-top:1.25rem}
-
-/* アプリ本体 */
 #app-body{display:none}
 .app{max-width:640px;margin:0 auto;padding:1.25rem 1rem}
 .app-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
 .app-title{font-size:17px;font-weight:500;display:flex;align-items:center;gap:8px;color:var(--txt)}
-.lock-again-btn{font-size:12px;color:var(--txt2);border:0.5px solid var(--border2);border-radius:var(--r);padding:5px 10px;background:transparent;cursor:pointer;font-family:inherit}
-.lock-again-btn:hover{background:var(--bg2)}
-.nav{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:1.25rem;background:var(--bg2);border-radius:var(--rl);padding:4px}
-.nav-btn{padding:7px 2px;font-size:12px;font-weight:500;border:none;background:transparent;color:var(--txt2);border-radius:var(--r);cursor:pointer;transition:all 0.15s;white-space:nowrap}
+.lock-again-btn{font-size:12px;color:var(--txt2);border:0.5px solid var(--border2);border-radius:var(--r);padding:5px 10px;background:transparent;cursor:pointer;font-family:inherit;-webkit-appearance:none}
+.nav{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin-bottom:1.25rem;background:var(--bg2);border-radius:var(--rl);padding:4px}
+.nav-btn{padding:7px 2px;font-size:12px;font-weight:500;border:none;background:transparent;color:var(--txt2);border-radius:var(--r);cursor:pointer;white-space:nowrap;-webkit-appearance:none;font-family:inherit}
 .nav-btn.active{background:var(--bg);color:var(--txt);border:0.5px solid var(--border)}
 .screen{display:none}.screen.active{display:block}
 .card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;margin-bottom:1rem}
 .lbl{font-size:12px;color:var(--txt2);margin-bottom:5px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-select,input[type=text]{width:100%;font-size:14px;padding:8px 10px;border-radius:var(--r);border:0.5px solid var(--border2);background:var(--bg2);color:var(--txt);outline:none;font-family:inherit}
-select:focus,input[type=text]:focus{border-color:#185FA5}
+select,input[type=text],input[type=password]{width:100%;font-size:14px;padding:8px 10px;border-radius:var(--r);border:0.5px solid var(--border2);background:var(--bg2);color:var(--txt);outline:none;font-family:inherit;-webkit-appearance:none}
+select{-webkit-appearance:auto}
 textarea{width:100%;font-size:14px;padding:10px;border-radius:var(--r);border:0.5px solid var(--border2);background:var(--bg2);color:var(--txt);resize:vertical;line-height:1.6;font-family:inherit;outline:none}
-textarea:focus{border-color:#185FA5}
-.btn-primary{width:100%;padding:10px;font-size:14px;font-weight:500;border:none;border-radius:var(--r);background:#185FA5;color:#E6F1FB;cursor:pointer;transition:opacity 0.15s;font-family:inherit}
-.btn-primary:hover{opacity:0.85}
-.copy-btn{flex:1;padding:9px;font-size:13px;font-weight:500;border-radius:var(--r);border:0.5px solid var(--border2);background:var(--bg);color:var(--txt);cursor:pointer;font-family:inherit;transition:background 0.1s}
-.copy-btn:hover{background:var(--bg2)}
+.btn-primary{width:100%;padding:10px;font-size:14px;font-weight:500;border:none;border-radius:var(--r);background:#185FA5;color:#E6F1FB;cursor:pointer;font-family:inherit;-webkit-appearance:none}
+.btn-primary:active{opacity:0.7}
+.copy-btn{flex:1;padding:9px;font-size:13px;font-weight:500;border-radius:var(--r);border:0.5px solid var(--border2);background:var(--bg);color:var(--txt);cursor:pointer;font-family:inherit;-webkit-appearance:none}
 .copy-btn.ok{border-color:#0F6E56;color:#0F6E56;background:#E1F5EE}
 .mic-wrap{display:flex;flex-direction:column;align-items:center;padding:1rem;gap:10px}
-.mic-btn{width:64px;height:64px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.mic-btn{width:64px;height:64px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-appearance:none}
 .mic-btn.idle{background:#E6F1FB}
 .mic-btn.rec{background:#E24B4A;animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(226,75,74,.3)}50%{box-shadow:0 0 0 10px rgba(226,75,74,0)}}
 .mic-lbl{font-size:13px;color:var(--txt2)}
-.output-box{background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--r);padding:12px;font-size:14px;color:var(--txt);line-height:1.8;min-height:70px;white-space:pre-wrap}
+.output-box{background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--r);padding:12px;font-size:14px;color:var(--txt);line-height:1.8;min-height:70px;white-space:pre-wrap;word-break:break-all}
 .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:999px}
 .b-blue{background:#E6F1FB;color:#0C447C}
 .b-green{background:#EAF3DE;color:#27500A}
@@ -74,18 +66,16 @@ textarea:focus{border-color:#185FA5}
 .add-form{background:var(--bg2);border-radius:var(--rl);padding:1rem;margin-bottom:1rem}
 .tag-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .tag{display:inline-flex;align-items:center;gap:6px;font-size:13px;padding:5px 10px;border-radius:var(--r);background:var(--bg);border:0.5px solid var(--border);color:var(--txt)}
-.tag-del{font-size:16px;color:var(--txt2);cursor:pointer;border:none;background:none;padding:0;line-height:1}
-.tag-del:hover{color:#A32D2D}
+.tag-del{font-size:16px;color:var(--txt2);cursor:pointer;border:none;background:none;padding:0;line-height:1;-webkit-appearance:none}
 .master-section{margin-bottom:1.5rem}
 .inline-add{display:flex;gap:8px}
 .inline-add input{flex:1}
-.inline-add button{padding:8px 14px;font-size:13px;font-weight:500;border:0.5px solid var(--border2);border-radius:var(--r);background:var(--bg);color:var(--txt);cursor:pointer;white-space:nowrap;font-family:inherit}
-.inline-add button:hover{background:var(--bg2)}
+.inline-add .add-btn{padding:8px 14px;font-size:13px;font-weight:500;border:0.5px solid var(--border2);border-radius:var(--r);background:var(--bg);color:var(--txt);cursor:pointer;white-space:nowrap;font-family:inherit;-webkit-appearance:none}
 .ex-item{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--rl);padding:1rem;margin-bottom:10px}
 .ex-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .ex-lbl{font-size:11px;color:var(--txt2);margin-bottom:3px}
 .ex-txt{font-size:13px;color:var(--txt);line-height:1.6;background:var(--bg2);border-radius:var(--r);padding:6px 8px;margin-bottom:6px}
-.del-btn{font-size:12px;color:#A32D2D;border:0.5px solid #F09595;border-radius:var(--r);padding:4px 8px;background:transparent;cursor:pointer;font-family:inherit}
+.del-btn{font-size:12px;color:#A32D2D;border:0.5px solid #F09595;border-radius:var(--r);padding:4px 8px;background:transparent;cursor:pointer;font-family:inherit;-webkit-appearance:none}
 .info-banner{background:#E6F1FB;border:0.5px solid #85B7EB;border-radius:var(--r);padding:10px 14px;margin-bottom:1rem;font-size:13px;color:#0C447C;line-height:1.6}
 .pw-change-form{background:var(--bg2);border-radius:var(--rl);padding:1rem;margin-bottom:1.5rem}
 </style>
@@ -106,16 +96,15 @@ textarea:focus{border-color:#185FA5}
     </div>
     <p class="lock-sub">パスワードを入力してください</p>
     <div class="lock-input-wrap">
-      <input class="lock-input" type="password" id="pw-input" placeholder="パスワード"
-        onkeydown="if(event.key==='Enter')tryLogin()">
-      <button class="eye-btn" id="eye-btn" onclick="togglePw()" tabindex="-1">
+      <input class="lock-input" type="password" id="pw-input" placeholder="パスワード">
+      <button class="eye-btn" id="eye-btn" tabindex="-1">
         <svg id="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
           <circle cx="12" cy="12" r="3"/>
         </svg>
       </button>
     </div>
-    <button class="lock-btn" onclick="tryLogin()">ログイン</button>
+    <button class="lock-btn" id="login-btn">ログイン</button>
     <p class="lock-error" id="lock-error"></p>
     <p class="lock-hint">パスワードを忘れた場合は管理者にお問い合わせください</p>
   </div>
@@ -132,14 +121,15 @@ textarea:focus{border-color:#185FA5}
         </svg>
         訪問看護 業務記録
       </div>
-      <button class="lock-again-btn" onclick="lockApp()">ロック</button>
+      <button class="lock-again-btn" id="lock-btn">ロック</button>
     </div>
 
     <div class="nav">
-      <button class="nav-btn active" onclick="showScreen('record')">記録入力</button>
-      <button class="nav-btn" onclick="showScreen('list')">記録一覧</button>
-      <button class="nav-btn" onclick="showScreen('learn')">学習例</button>
-      <button class="nav-btn" onclick="showScreen('master')">マスタ管理</button>
+      <button class="nav-btn active" data-screen="record">記録入力</button>
+      <button class="nav-btn" data-screen="list">記録一覧</button>
+      <button class="nav-btn" data-screen="learn">学習例</button>
+      <button class="nav-btn" data-screen="master">マスタ管理</button>
+      <button class="nav-btn" data-screen="dict">用語辞書</button>
     </div>
 
     <!-- 記録入力 -->
@@ -158,7 +148,7 @@ textarea:focus{border-color:#185FA5}
       <div class="card">
         <div class="lbl">音声入力</div>
         <div class="mic-wrap">
-          <button class="mic-btn idle" id="mic-btn" onclick="toggleMic()">
+          <button class="mic-btn idle" id="mic-btn">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2" stroke-linecap="round" id="mic-svg">
               <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>
               <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3M8 22h8"/>
@@ -170,7 +160,7 @@ textarea:focus{border-color:#185FA5}
         <textarea id="raw-in" rows="3" placeholder="例：血圧128の76、体温36.5、本人元気そう。食事は朝半分食べた。"></textarea>
       </div>
       <div style="margin-bottom:1rem">
-        <button class="btn-primary" onclick="convertText()">記録文に変換する</button>
+        <button class="btn-primary" id="convert-btn">記録文に変換する</button>
       </div>
       <div class="card" id="out-card" style="display:none">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
@@ -180,9 +170,9 @@ textarea:focus{border-color:#185FA5}
         <div class="output-box" id="out-text" contenteditable="true"></div>
         <div style="font-size:11px;color:var(--txt2);margin-top:6px">直接編集できます</div>
         <div style="display:flex;gap:8px;margin-top:8px">
-          <button class="copy-btn" id="copy-btn" onclick="copyOut()">ワンタッチコピー</button>
-          <button class="copy-btn" style="flex:0.55" onclick="saveRecord()">記録を保存</button>
-          <button class="copy-btn" style="flex:0.45" onclick="convertText()">再変換</button>
+          <button class="copy-btn" id="copy-btn">ワンタッチコピー</button>
+          <button class="copy-btn" id="save-btn" style="flex:0.55">記録を保存</button>
+          <button class="copy-btn" id="reconvert-btn" style="flex:0.45">再変換</button>
         </div>
       </div>
     </div>
@@ -190,9 +180,9 @@ textarea:focus{border-color:#185FA5}
     <!-- 記録一覧 -->
     <div id="screen-list" class="screen">
       <div class="filter-row">
-        <select class="f-sel" id="f-nurse" onchange="renderList()"><option value="">看護師：全員</option></select>
-        <select class="f-sel" id="f-patient" onchange="renderList()"><option value="">利用者：全員</option></select>
-        <select class="f-sel" id="f-type" onchange="renderList()"><option value="">種別：全て</option></select>
+        <select class="f-sel" id="f-nurse"><option value="">看護師：全員</option></select>
+        <select class="f-sel" id="f-patient"><option value="">利用者：全員</option></select>
+        <select class="f-sel" id="f-type"><option value="">種別：全て</option></select>
       </div>
       <div id="list-wrap"></div>
     </div>
@@ -204,7 +194,7 @@ textarea:focus{border-color:#185FA5}
         <div style="margin-bottom:8px"><div class="lbl">訪問種別</div><select id="ex-type" style="width:100%"></select></div>
         <div style="margin-bottom:8px"><div class="lbl">入力メモ</div><textarea id="ex-in" rows="2" placeholder="例：体拭き、着替え介助した。皮膚に赤みあり"></textarea></div>
         <div style="margin-bottom:10px"><div class="lbl">正式記録文</div><textarea id="ex-out" rows="3" placeholder="例：清拭および更衣介助を実施した。右仙骨部に発赤を認めたため経過観察とした。"></textarea></div>
-        <button class="btn-primary" onclick="addExample()">学習例を追加</button>
+        <button class="btn-primary" id="add-ex-btn">学習例を追加</button>
       </div>
       <div class="section-title">登録済み学習例</div>
       <div id="ex-list"></div>
@@ -217,35 +207,53 @@ textarea:focus{border-color:#185FA5}
         <div style="margin-bottom:8px"><div class="lbl">現在のパスワード</div><input type="password" id="pw-old" style="width:100%"></div>
         <div style="margin-bottom:8px"><div class="lbl">新しいパスワード</div><input type="password" id="pw-new" style="width:100%"></div>
         <div style="margin-bottom:12px"><div class="lbl">新しいパスワード（確認）</div><input type="password" id="pw-new2" style="width:100%"></div>
-        <button class="btn-primary" onclick="changePassword()">パスワードを変更</button>
+        <button class="btn-primary" id="change-pw-btn">パスワードを変更</button>
         <p id="pw-change-msg" style="font-size:13px;margin-top:8px;min-height:18px"></p>
       </div>
-
       <div class="master-section">
         <div class="section-title">看護師</div>
-        <div class="inline-add"><input type="text" id="new-nurse" placeholder="看護師名を入力"><button onclick="addMaster('nurse')">追加</button></div>
+        <div class="inline-add"><input type="text" id="new-nurse" placeholder="看護師名を入力"><button class="add-btn" data-master="nurse">追加</button></div>
         <div class="tag-list" id="nurse-tags"></div>
       </div>
       <div class="master-section">
         <div class="section-title">利用者</div>
-        <div class="inline-add"><input type="text" id="new-patient" placeholder="例：田中 花子 様"><button onclick="addMaster('patient')">追加</button></div>
+        <div class="inline-add"><input type="text" id="new-patient" placeholder="例：田中 花子 様"><button class="add-btn" data-master="patient">追加</button></div>
         <div class="tag-list" id="patient-tags"></div>
       </div>
       <div class="master-section">
         <div class="section-title">訪問種別</div>
-        <div class="inline-add"><input type="text" id="new-type" placeholder="種別名を入力"><button onclick="addMaster('type')">追加</button></div>
+        <div class="inline-add"><input type="text" id="new-type" placeholder="種別名を入力"><button class="add-btn" data-master="type">追加</button></div>
         <div class="tag-list" id="type-tags"></div>
       </div>
     </div>
+  
+    <!-- 用語辞書画面 -->
+    <div id="screen-dict" class="screen" style="display:none">
+  <div class="section-title">用語辞書に追加</div>
+  <div class="add-form">
+    <div style="margin-bottom:8px">
+      <div class="lbl">読み・誤変換（変換前）</div>
+      <input type="text" id="dict-from" placeholder="例：そくがい、側買い">
+    </div>
+    <div style="margin-bottom:10px">
+      <div class="lbl">正しい医療用語（変換後）</div>
+      <input type="text" id="dict-to" placeholder="例：側臥位">
+    </div>
+    <button class="btn-primary" id="add-dict-btn">辞書に追加</button>
   </div>
+  <div class="section-title">登録済み用語</div>
+  <div id="dict-list"></div>
 </div>
 
 <script>
-const RECORDS_KEY='nrs_rec_v4';
-const EXAMPLES_KEY='nrs_ex_v4';
-const MASTER_KEY='nrs_master_v4';
-const PW_KEY='nrs_pw_v4';
+'use strict';
+
+const RECORDS_KEY='nrs_rec_v5';
+const EXAMPLES_KEY='nrs_ex_v5';
+const MASTER_KEY='nrs_master_v5';
+const PW_KEY='nrs_pw_v5';
 const RETENTION_DAYS=7;
+const DICT_KEY='nrs_dict_v5';
 const DEFAULT_PW='kango1234';
 
 const defaultMaster={
@@ -261,8 +269,32 @@ const defaultExamples=[
   {id:'e5',type:'生活援助',input:'掃除と洗濯した。本人は台所で見ていた',output:'居室の清掃および洗濯を実施しました。利用者様は台所にて見守りながら過ごされ、日常生活動作の維持に努めました。'},
 ];
 
-function lsGet(k,def){try{const s=localStorage.getItem(k);return s?JSON.parse(s):def;}catch{return def;}}
-function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
+const defaultDict=[
+  {id:'d1',from:'そくがい',to:'側臥位'},
+  {id:'d2',from:'側買い',to:'側臥位'},
+  {id:'d3',from:'はいがい',to:'背臥位'},
+  {id:'d4',from:'背買い',to:'背臥位'},
+  {id:'d5',from:'ふくがい',to:'腹臥位'},
+  {id:'d6',from:'きょざい',to:'起座位'},
+  {id:'d7',from:'じょくそう',to:'褥瘡'},
+  {id:'d8',from:'床創',to:'褥瘡'},
+  {id:'d9',from:'こうくうケア',to:'口腔ケア'},
+  {id:'d10',from:'けいかんえいよう',to:'経管栄養'},
+  {id:'d11',from:'きゅういん',to:'吸引'},
+  {id:'d12',from:'たんきゅういん',to:'短期吸引'},
+  {id:'d13',from:'いどうかいじょ',to:'移動介助'},
+  {id:'d14',from:'はいせつかいじょ',to:'排泄介助'},
+  {id:'d15',from:'たいいへんかん',to:'体位変換'},
+  {id:'d16',from:'せいしきめい',to:'正式名'},
+  {id:'d17',from:'むくみ',to:'浮腫'},
+  {id:'d18',from:'あかみ',to:'発赤'},
+];
+
+function loadDict(){return lsGet(DICT_KEY,JSON.parse(JSON.stringify(defaultDict)));}
+function saveDict(d){lsSet(DICT_KEY,d);}
+
+function lsGet(k,def){try{const s=localStorage.getItem(k);return s?JSON.parse(s):def;}catch(e){return def;}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 function getPassword(){return localStorage.getItem(PW_KEY)||DEFAULT_PW;}
 function loadMaster(){return lsGet(MASTER_KEY,JSON.parse(JSON.stringify(defaultMaster)));}
 function saveMaster(m){lsSet(MASTER_KEY,m);}
@@ -271,7 +303,7 @@ function saveExamples(ex){lsSet(EXAMPLES_KEY,ex);}
 function loadRecords(){
   const all=lsGet(RECORDS_KEY,[]);
   const cutoff=Date.now()-RETENTION_DAYS*86400000;
-  return all.filter(r=>new Date(r.ts).getTime()>cutoff);
+  return all.filter(function(r){return new Date(r.ts).getTime()>cutoff;});
 }
 function saveRecords(r){lsSet(RECORDS_KEY,r);}
 
@@ -281,27 +313,22 @@ function fmtDt(d){
 }
 
 /* ===== ロック ===== */
-let failCount=0;
 function tryLogin(){
-  const input=document.getElementById('pw-input').value;
+  const input=document.getElementById('pw-input');
   const errEl=document.getElementById('lock-error');
-  if(input===getPassword()){
+  if(input.value===getPassword()){
     document.getElementById('lock-screen').style.display='none';
     document.getElementById('app-body').style.display='block';
-    document.getElementById('pw-input').value='';
+    input.value='';
     errEl.textContent='';
-    failCount=0;
     populateSelects();
     document.getElementById('dt-disp').value=fmtDt(new Date());
   } else {
-    failCount++;
-    document.getElementById('pw-input').classList.add('error');
+    input.classList.add('error');
     errEl.textContent='パスワードが違います。管理者にご確認ください。';
-    setTimeout(()=>{
-      document.getElementById('pw-input').classList.remove('error');
-    },1000);
-    document.getElementById('pw-input').value='';
-    document.getElementById('pw-input').focus();
+    setTimeout(function(){input.classList.remove('error');},1000);
+    input.value='';
+    input.focus();
   }
 }
 
@@ -334,12 +361,41 @@ function changePassword(){
   document.getElementById('pw-new').value='';
   document.getElementById('pw-new2').value='';
   msg.style.color='#0F6E56';msg.textContent='パスワードを変更しました。';
-  setTimeout(()=>{msg.textContent='';},3000);
+  setTimeout(function(){msg.textContent='';},3000);
 }
 
 /* ===== 変換エンジン ===== */
 function ruleConvert(raw,type){
   let text=raw;
+
+  // 改行キーワードを改行コードに変換（処理の最初に行う）
+  text=text.replace(/[、。]?\s*(かいぎょう|改行|次の項目|つぎ|次[にへ]|以上|いじょう)\s*/g,'\n');
+
+  // フィラー語・ノイズ除去
+  const fillers=[
+    /あーと+\s*/g, /あー+\s*/g, /えーと+\s*/g, /えー+\s*/g,
+    /うーん+\s*/g, /うん、\s*/g, /まあ、\s*/g, /まあ\s+/g,
+    /なんか、\s*/g, /なんか\s+/g, /そのー+\s*/g, /そのう+\s*/g,
+    /ちょっと、\s*/g, /ええと+\s*/g, /ええ、\s*/g,
+    /あの、\s*/g, /あのー+\s*/g, /ですね、\s*/g, /ですね。\s*/g,
+    /でー+、\s*/g, /でー+\s+/g,
+  ];
+  fillers.forEach(function(p){text=text.replace(p,'');});
+
+  // 言い直し除去（同じ単語の繰り返し：「血圧が、血圧が」→「血圧が」）
+  text=text.replace(/([^\s、。]{2,})[がはをにで]?[、\s]+\1/g,'$1');
+
+  // 文頭の不要な接続詞除去
+  text=text.replace(/^(で、|そして、|それで、|また、|あと、)\s*/gm,'');
+
+  // ユーザー辞書変換（最優先）
+  const dict=loadDict();
+  dict.forEach(function(d){
+    if(!d.from||!d.to)return;
+    const re=new RegExp(d.from.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g');
+    text=text.replace(re,d.to);
+  });
+
   text=text.replace(/血圧\s*(\d+)\s*[のとの\/]\s*(\d+)/g,'血圧$1/$2mmHg');
   text=text.replace(/体温\s*(\d+[\.,]\d+)/g,'体温$1℃');
   text=text.replace(/脈拍\s*(\d+)/g,'脈拍$1回/分');
@@ -347,69 +403,110 @@ function ruleConvert(raw,type){
   text=text.replace(/酸素\s*(\d+)/g,'SpO2 $1%');
   text=text.replace(/熱\s*(\d+[\.,]\d+)/g,'体温$1℃');
   const terms=[[/体拭き/g,'清拭'],[/着替え介助/g,'更衣介助'],[/おむつ交換/g,'排泄介助（おむつ交換）'],[/トイレ介助/g,'排泄介助'],[/胃ろう/g,'胃瘻'],[/床ずれ/g,'褥瘡'],[/赤み/g,'発赤'],[/むくみ/g,'浮腫'],[/歩行練習/g,'歩行訓練'],[/リハビリ(?!テーション)/g,'リハビリテーション'],[/掃除/g,'清掃'],[/痛みあり/g,'疼痛の訴えあり'],[/痛がっていた/g,'疼痛の訴えがあった']];
-  terms.forEach(([p,r])=>{text=text.replace(p,r);});
+  terms.forEach(function(t){text=text.replace(t[0],t[1]);});
   const subj=[[/元気そう/g,'表情良好で自覚症状の訴えなし'],[/元気だった/g,'表情良好で自覚症状の訴えなし'],[/元気/g,'表情良好'],[/疲れ気味/g,'軽度の倦怠感の訴えあり'],[/疲れていた/g,'倦怠感の訴えあり'],[/少し疲れ/g,'軽度の倦怠感の訴えあり'],[/しんどそう/g,'倦怠感を認めた'],[/きれい/g,'異常所見なし'],[/問題なし/g,'異常所見なし'],[/普通/g,'特記事項なし'],[/最後まで頑張った/g,'最後まで意欲的に取り組まれた'],[/頑張っていた/g,'意欲的に取り組まれた'],[/嫌がっていた/g,'拒否の意思表示あり'],[/眠そう/g,'傾眠傾向あり'],[/ぼーっとしていた/g,'意識レベルの低下を認めた'],[/食欲あり/g,'食欲良好'],[/食欲なし/g,'食欲低下あり'],[/食欲がない/g,'食欲低下あり'],[/少し食べた/g,'少量摂取'],[/半分食べた/g,'半量摂取'],[/全部食べた/g,'全量摂取'],[/食べなかった/g,'摂取なし']];
-  subj.forEach(([p,r])=>{text=text.replace(p,r);});
-  const frames={'バイタル確認':(t)=>{let s=`バイタル測定を実施しました。${t}`;if(!t.includes('訴え')&&!t.includes('自覚'))s+='。利用者様の状態に大きな変化は認めませんでした。';return s;},'身体介護':(t)=>t.includes('実施')?t:`${t}を実施しました。`,'医療処置':(t)=>t.includes('実施')?t:`処置を実施しました。${t}`,'リハビリ':(t)=>{let s=t;if(!t.includes('実施')&&!t.includes('訓練'))s=`リハビリテーションを実施しました。${t}`;if(!t.includes('バイタル'))s+='。訓練後のバイタルに著変なし。';return s;},'生活援助':(t)=>t.includes('実施')?t:`${t}を実施しました。`};
-  const frame=frames[type]||((t)=>t);
-  let result=frame(text);
-  result=result.replace(/。+/g,'。').replace(/、+/g,'、');
-  result=result.replace(/([^。])$/,'$1。').replace(/\n/g,'');
-  result=result.replace(/利用者(?!様)/g,'利用者様');
+  subj.forEach(function(t){text=text.replace(t[0],t[1]);});
+  const frames={
+    'バイタル確認':function(t){var s='バイタル測定を実施しました。'+t;if(t.indexOf('訴え')<0&&t.indexOf('自覚')<0)s+='。利用者様の状態に大きな変化は認めませんでした。';return s;},
+    '身体介護':function(t){return t.indexOf('実施')>=0?t:t+'を実施しました。';},
+    '医療処置':function(t){return t.indexOf('実施')>=0?t:'処置を実施しました。'+t;},
+    'リハビリ':function(t){var s=t;if(t.indexOf('実施')<0&&t.indexOf('訓練')<0)s='リハビリテーションを実施しました。'+t;if(t.indexOf('バイタル')<0)s+='。訓練後のバイタルに著変なし。';return s;},
+    '生活援助':function(t){return t.indexOf('実施')>=0?t:t+'を実施しました。';}
+  };
+  const frame=frames[type]||function(t){return t;};
+  const lines=text.split('\n').map(function(l){return l.trim();}).filter(function(l){return l.length>0;});
+  let result;
+  if(lines.length>1){
+    result=lines.map(function(line){
+      let r=line.replace(/。+/g,'。').replace(/、+/g,'、').replace(/利用者(?!様)/g,'利用者様');
+      if(!/。$/.test(r))r=r+'。';
+      return r;
+    }).join('\n');
+  } else {
+    result=frame(text);
+    result=result.replace(/。+/g,'。').replace(/、+/g,'、').replace(/\n/g,'').replace(/利用者(?!様)/g,'利用者様');
+    if(!/。$/.test(result.trim()))result=result.trim()+'。';
+  }
   return result.trim();
 }
 
 function populateSelects(){
   const m=loadMaster();
-  const fill=(id,arr)=>{const el=document.getElementById(id);if(!el)return;const cur=el.value;el.innerHTML=arr.map(v=>`<option>${v}</option>`).join('');if(arr.includes(cur))el.value=cur;};
+  function fill(id,arr){
+    const el=document.getElementById(id);
+    if(!el)return;
+    const cur=el.value;
+    el.innerHTML=arr.map(function(v){return '<option>'+v+'</option>';}).join('');
+    if(arr.indexOf(cur)>=0)el.value=cur;
+  }
   fill('nurse-sel',m.nurses);fill('patient-sel',m.patients);fill('type-sel',m.types);fill('ex-type',m.types);
-  const fn=document.getElementById('f-nurse');const fp=document.getElementById('f-patient');const ft=document.getElementById('f-type');
-  if(fn){const cv=fn.value;fn.innerHTML='<option value="">看護師：全員</option>'+m.nurses.map(v=>`<option>${v}</option>`).join('');fn.value=cv;}
-  if(fp){const cv=fp.value;fp.innerHTML='<option value="">利用者：全員</option>'+m.patients.map(v=>`<option>${v}</option>`).join('');fp.value=cv;}
-  if(ft){const cv=ft.value;ft.innerHTML='<option value="">種別：全て</option>'+m.types.map(v=>`<option>${v}</option>`).join('');ft.value=cv;}
+  const fn=document.getElementById('f-nurse');
+  const fp=document.getElementById('f-patient');
+  const ft=document.getElementById('f-type');
+  if(fn){const cv=fn.value;fn.innerHTML='<option value="">看護師：全員</option>'+m.nurses.map(function(v){return '<option>'+v+'</option>';}).join('');fn.value=cv;}
+  if(fp){const cv=fp.value;fp.innerHTML='<option value="">利用者：全員</option>'+m.patients.map(function(v){return '<option>'+v+'</option>';}).join('');fp.value=cv;}
+  if(ft){const cv=ft.value;ft.innerHTML='<option value="">種別：全て</option>'+m.types.map(function(v){return '<option>'+v+'</option>';}).join('');ft.value=cv;}
 }
 
 function renderMasterTags(){
   const m=loadMaster();
   const colors={nurses:'b-blue',patients:'b-teal',types:'b-amber'};
-  [['nurses','nurse-tags'],['patients','patient-tags'],['types','type-tags']].forEach(([key,tid])=>{
-    document.getElementById(tid).innerHTML=m[key].map((v,i)=>`<span class="tag"><span class="badge ${colors[key]}">${v}</span><button class="tag-del" onclick="deleteMaster('${key}',${i})">×</button></span>`).join('');
+  [['nurses','nurse-tags'],['patients','patient-tags'],['types','type-tags']].forEach(function(pair){
+    const key=pair[0],tid=pair[1];
+    document.getElementById(tid).innerHTML=m[key].map(function(v,i){
+      return '<span class="tag"><span class="badge '+colors[key]+'">'+v+'</span><button class="tag-del" data-key="'+key+'" data-idx="'+i+'">×</button></span>';
+    }).join('');
+    document.getElementById(tid).querySelectorAll('.tag-del').forEach(function(btn){
+      btn.addEventListener('touchend',function(e){e.preventDefault();deleteMaster(btn.dataset.key,parseInt(btn.dataset.idx));});
+      btn.addEventListener('click',function(){deleteMaster(btn.dataset.key,parseInt(btn.dataset.idx));});
+    });
   });
 }
 
 function addMaster(key){
   const inputId={nurse:'new-nurse',patient:'new-patient',type:'new-type'}[key];
   const masterKey={nurse:'nurses',patient:'patients',type:'types'}[key];
-  const input=document.getElementById(inputId);const val=input.value.trim();if(!val)return;
-  const m=loadMaster();if(m[masterKey].includes(val)){alert('すでに登録されています。');return;}
+  const input=document.getElementById(inputId);
+  const val=input.value.trim();if(!val)return;
+  const m=loadMaster();
+  if(m[masterKey].indexOf(val)>=0){alert('すでに登録されています。');return;}
   m[masterKey].push(val);saveMaster(m);input.value='';populateSelects();renderMasterTags();
 }
 function deleteMaster(key,idx){
-  const m=loadMaster();if(m[key].length<=1){alert('最低1件は必要です。');return;}
+  const m=loadMaster();
+  if(m[key].length<=1){alert('最低1件は必要です。');return;}
   m[key].splice(idx,1);saveMaster(m);populateSelects();renderMasterTags();
 }
 
 let isRec=false,recognition=null;
 
 function showScreen(s){
-  document.querySelectorAll('.screen').forEach(el=>el.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(function(el){el.classList.remove('active');});
+  document.querySelectorAll('.nav-btn').forEach(function(el){el.classList.remove('active');});
   document.getElementById('screen-'+s).classList.add('active');
-  const idx={record:0,list:1,learn:2,master:3}[s];
-  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  document.querySelector('[data-screen="'+s+'"]').classList.add('active');
   if(s==='list')renderList();
   if(s==='learn')renderExamples();
   if(s==='master')renderMasterTags();
+  if(s==='dict')renderDict();
 }
 
 function toggleMic(){isRec?stopMic():startMic();}
 function startMic(){
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   if(!SR){alert('音声認識未対応のブラウザです。Safariをお使いください。');return;}
-  recognition=new SR();recognition.lang='ja-JP';recognition.continuous=true;recognition.interimResults=true;
+  recognition=new SR();
+  recognition.lang='ja-JP';recognition.continuous=true;recognition.interimResults=true;
   let final=document.getElementById('raw-in').value;
-  recognition.onresult=e=>{let interim='';for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)final+=e.results[i][0].transcript;else interim+=e.results[i][0].transcript;}document.getElementById('raw-in').value=final+interim;};
-  recognition.onerror=()=>stopMic();
+  recognition.onresult=function(e){
+    let interim='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      if(e.results[i].isFinal)final+=e.results[i][0].transcript;
+      else interim+=e.results[i][0].transcript;
+    }
+    document.getElementById('raw-in').value=final+interim;
+  };
+  recognition.onerror=function(){stopMic();};
   recognition.start();isRec=true;
   document.getElementById('mic-btn').className='mic-btn rec';
   document.getElementById('mic-svg').setAttribute('stroke','#fff');
@@ -433,54 +530,160 @@ function convertText(){
 function copyOut(){
   const text=document.getElementById('out-text').textContent;
   if(!text)return;
-  navigator.clipboard.writeText(text).then(()=>{
-    const b=document.getElementById('copy-btn');
+  const b=document.getElementById('copy-btn');
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(function(){
+      b.textContent='コピーしました';b.className='copy-btn ok';
+      setTimeout(function(){b.textContent='ワンタッチコピー';b.className='copy-btn';},2000);
+    });
+  } else {
+    const ta=document.createElement('textarea');
+    ta.value=text;document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');document.body.removeChild(ta);
     b.textContent='コピーしました';b.className='copy-btn ok';
-    setTimeout(()=>{b.textContent='ワンタッチコピー';b.className='copy-btn';},2000);
-  });
+    setTimeout(function(){b.textContent='ワンタッチコピー';b.className='copy-btn';},2000);
+  }
 }
 
 function saveRecord(){
   const text=document.getElementById('out-text').textContent;
   if(!text){alert('先に変換してください。');return;}
-  const rec={id:'r'+Date.now(),ts:new Date().toISOString(),nurse:document.getElementById('nurse-sel').value,patient:document.getElementById('patient-sel').value,type:document.getElementById('type-sel').value,raw:document.getElementById('raw-in').value,output:text};
+  const rec={
+    id:'r'+Date.now(),ts:new Date().toISOString(),
+    nurse:document.getElementById('nurse-sel').value,
+    patient:document.getElementById('patient-sel').value,
+    type:document.getElementById('type-sel').value,
+    raw:document.getElementById('raw-in').value,
+    output:text
+  };
   const recs=loadRecords();recs.unshift(rec);saveRecords(recs);
-  const b=document.querySelector('[onclick="saveRecord()"]');
+  const b=document.getElementById('save-btn');
   b.textContent='保存しました';b.className='copy-btn ok';
-  setTimeout(()=>{b.textContent='記録を保存';b.className='copy-btn';},2000);
+  setTimeout(function(){b.textContent='記録を保存';b.className='copy-btn';},2000);
 }
 
 function renderList(){
-  const fN=document.getElementById('f-nurse').value;const fP=document.getElementById('f-patient').value;const fT=document.getElementById('f-type').value;
+  const fN=document.getElementById('f-nurse').value;
+  const fP=document.getElementById('f-patient').value;
+  const fT=document.getElementById('f-type').value;
   let recs=loadRecords();
-  if(fN)recs=recs.filter(r=>r.nurse===fN);if(fP)recs=recs.filter(r=>r.patient===fP);if(fT)recs=recs.filter(r=>r.type===fT);
+  if(fN)recs=recs.filter(function(r){return r.nurse===fN;});
+  if(fP)recs=recs.filter(function(r){return r.patient===fP;});
+  if(fT)recs=recs.filter(function(r){return r.type===fT;});
   const wrap=document.getElementById('list-wrap');
   if(!recs.length){wrap.innerHTML='<div class="empty">記録がありません</div>';return;}
   const tc={身体介護:'b-blue',生活援助:'b-green',医療処置:'b-amber',リハビリ:'b-teal',バイタル確認:'b-gray'};
-  wrap.innerHTML=recs.map(r=>`<div class="rec-item"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><span style="font-size:14px;font-weight:500;color:var(--txt)">${r.patient}</span><span class="badge ${tc[r.type]||'b-gray'}">${r.type}</span></div><div class="rec-meta">${fmtDt(r.ts)} &nbsp;|&nbsp; ${r.nurse}</div><div class="rec-body">${r.output}</div></div>`).join('');
+  wrap.innerHTML=recs.map(function(r){
+    return '<div class="rec-item"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><span style="font-size:14px;font-weight:500;color:var(--txt)">'+r.patient+'</span><span class="badge '+(tc[r.type]||'b-gray')+'">'+r.type+'</span></div><div class="rec-meta">'+fmtDt(r.ts)+' &nbsp;|&nbsp; '+r.nurse+'</div><div class="rec-body">'+r.output+'</div></div>';
+  }).join('');
 }
 
 function renderExamples(){
-  const examples=loadExamples();const wrap=document.getElementById('ex-list');
+  const examples=loadExamples();
+  const wrap=document.getElementById('ex-list');
   if(!examples.length){wrap.innerHTML='<div class="empty">学習例がありません</div>';return;}
   const tc={身体介護:'b-blue',生活援助:'b-green',医療処置:'b-amber',リハビリ:'b-teal',バイタル確認:'b-gray'};
-  wrap.innerHTML=examples.map(e=>`<div class="ex-item"><div class="ex-head"><span class="badge ${tc[e.type]||'b-gray'}">${e.type}</span><button class="del-btn" onclick="deleteExample('${e.id}')">削除</button></div><div class="ex-lbl">入力メモ</div><div class="ex-txt">${e.input}</div><div class="ex-lbl">正式記録文</div><div class="ex-txt">${e.output}</div></div>`).join('');
+  wrap.innerHTML=examples.map(function(e){
+    return '<div class="ex-item"><div class="ex-head"><span class="badge '+(tc[e.type]||'b-gray')+'">'+e.type+'</span><button class="del-btn" data-exid="'+e.id+'">削除</button></div><div class="ex-lbl">入力メモ</div><div class="ex-txt">'+e.input+'</div><div class="ex-lbl">正式記録文</div><div class="ex-txt">'+e.output+'</div></div>';
+  }).join('');
+  wrap.querySelectorAll('.del-btn').forEach(function(btn){
+    btn.addEventListener('touchend',function(e){e.preventDefault();deleteExample(btn.dataset.exid);});
+    btn.addEventListener('click',function(){deleteExample(btn.dataset.exid);});
+  });
 }
 
 function addExample(){
-  const type=document.getElementById('ex-type').value;const inp=document.getElementById('ex-in').value.trim();const out=document.getElementById('ex-out').value.trim();
+  const type=document.getElementById('ex-type').value;
+  const inp=document.getElementById('ex-in').value.trim();
+  const out=document.getElementById('ex-out').value.trim();
   if(!inp||!out){alert('入力メモと記録文を両方入力してください。');return;}
-  const examples=loadExamples();examples.unshift({id:'e'+Date.now(),type,input:inp,output:out});saveExamples(examples);
-  document.getElementById('ex-in').value='';document.getElementById('ex-out').value='';renderExamples();
+  const examples=loadExamples();
+  examples.unshift({id:'e'+Date.now(),type:type,input:inp,output:out});
+  saveExamples(examples);
+  document.getElementById('ex-in').value='';
+  document.getElementById('ex-out').value='';
+  renderExamples();
 }
 
 function deleteExample(id){
   if(!confirm('この学習例を削除しますか？'))return;
-  saveExamples(loadExamples().filter(e=>e.id!==id));renderExamples();
+  saveExamples(loadExamples().filter(function(e){return e.id!==id;}));
+  renderExamples();
 }
 
-// 初期フォーカス
-document.getElementById('pw-input').focus();
+function renderDict(){
+  const dict=loadDict();
+  const wrap=document.getElementById('dict-list');
+  if(!dict.length){wrap.innerHTML='<div class="empty">登録された用語がありません</div>';return;}
+  wrap.innerHTML=dict.map(function(d){
+    return '<div class="ex-item"><div class="ex-head"><span style="font-size:13px;color:var(--txt)"><span style="color:var(--txt2)">'+d.from+'</span> → <strong>'+d.to+'</strong></span><button class="del-btn" data-dictid="'+d.id+'">削除</button></div></div>';
+  }).join('');
+  wrap.querySelectorAll('.del-btn').forEach(function(btn){
+    btn.addEventListener('touchend',function(e){e.preventDefault();deleteDict(btn.dataset.dictid);});
+    btn.addEventListener('click',function(){deleteDict(btn.dataset.dictid);});
+  });
+}
+
+function addDict(){
+  const from=document.getElementById('dict-from').value.trim();
+  const to=document.getElementById('dict-to').value.trim();
+  if(!from||!to){alert('変換前と変換後を両方入力してください。');return;}
+  const dict=loadDict();
+  dict.unshift({id:'d'+Date.now(),from:from,to:to});
+  saveDict(dict);
+  document.getElementById('dict-from').value='';
+  document.getElementById('dict-to').value='';
+  renderDict();
+}
+
+function deleteDict(id){
+  if(!confirm('この用語を削除しますか？'))return;
+  saveDict(loadDict().filter(function(d){return d.id!==id;}));
+  renderDict();
+}
+
+/* ===== イベント登録（DOMContentLoaded） ===== */
+document.addEventListener('DOMContentLoaded', function(){
+
+  function addTap(id, fn){
+    const el=document.getElementById(id);
+    if(!el)return;
+    el.addEventListener('touchend',function(e){e.preventDefault();fn();});
+    el.addEventListener('click',fn);
+  }
+
+  addTap('login-btn', tryLogin);
+  addTap('eye-btn', togglePw);
+  addTap('lock-btn', lockApp);
+  addTap('mic-btn', toggleMic);
+  addTap('convert-btn', convertText);
+  addTap('copy-btn', copyOut);
+  addTap('save-btn', saveRecord);
+  addTap('reconvert-btn', convertText);
+  addTap('add-ex-btn', addExample);
+  addTap('change-pw-btn', changePassword);
+  addTap('add-dict-btn', addDict);
+
+  document.getElementById('pw-input').addEventListener('keydown',function(e){
+    if(e.key==='Enter')tryLogin();
+  });
+
+  document.querySelectorAll('.nav-btn').forEach(function(btn){
+    btn.addEventListener('touchend',function(e){e.preventDefault();showScreen(btn.dataset.screen);});
+    btn.addEventListener('click',function(){showScreen(btn.dataset.screen);});
+  });
+
+  document.querySelectorAll('.add-btn').forEach(function(btn){
+    btn.addEventListener('touchend',function(e){e.preventDefault();addMaster(btn.dataset.master);});
+    btn.addEventListener('click',function(){addMaster(btn.dataset.master);});
+  });
+
+  document.getElementById('f-nurse').addEventListener('change',renderList);
+  document.getElementById('f-patient').addEventListener('change',renderList);
+  document.getElementById('f-type').addEventListener('change',renderList);
+
+  document.getElementById('pw-input').focus();
+});
 </script>
 </body>
 </html>
