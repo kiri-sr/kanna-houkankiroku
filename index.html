@@ -76,6 +76,8 @@ textarea{width:100%;font-size:14px;padding:10px;border-radius:var(--r);border:0.
 .ex-lbl{font-size:11px;color:var(--txt2);margin-bottom:3px}
 .ex-txt{font-size:13px;color:var(--txt);line-height:1.6;background:var(--bg2);border-radius:var(--r);padding:6px 8px;margin-bottom:6px}
 .del-btn{font-size:12px;color:#A32D2D;border:0.5px solid #F09595;border-radius:var(--r);padding:4px 8px;background:transparent;cursor:pointer;font-family:inherit;-webkit-appearance:none}
+.btn-clear{font-size:11px;color:var(--txt2);border:0.5px solid var(--border2);border-radius:var(--r);padding:3px 8px;background:transparent;cursor:pointer;font-family:inherit;-webkit-appearance:none}
+.btn-clear:active{background:var(--bg2)}
 .info-banner{background:#E6F1FB;border:0.5px solid #85B7EB;border-radius:var(--r);padding:10px 14px;margin-bottom:1rem;font-size:13px;color:#0C447C;line-height:1.6}
 .pw-change-form{background:var(--bg2);border-radius:var(--rl);padding:1rem;margin-bottom:1.5rem}
 </style>
@@ -156,7 +158,7 @@ textarea{width:100%;font-size:14px;padding:10px;border-radius:var(--r);border:0.
           </button>
           <span class="mic-lbl" id="mic-lbl">タップして録音開始</span>
         </div>
-        <div class="lbl">メモテキスト（編集可）</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px"><span class="lbl" style="margin:0">メモテキスト（編集可）</span><button class="btn-clear" id="clear-raw-btn">クリア</button></div>
         <textarea id="raw-in" rows="3" placeholder="例：血圧128の76、体温36.5、本人元気そう。食事は朝半分食べた。"></textarea>
       </div>
       <div style="margin-bottom:1rem">
@@ -574,8 +576,16 @@ function renderList(){
   if(!recs.length){wrap.innerHTML='<div class="empty">記録がありません</div>';return;}
   const tc={身体介護:'b-blue',生活援助:'b-green',医療処置:'b-amber',リハビリ:'b-teal',バイタル確認:'b-gray'};
   wrap.innerHTML=recs.map(function(r){
-    return '<div class="rec-item"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><span style="font-size:14px;font-weight:500;color:var(--txt)">'+r.patient+'</span><span class="badge '+(tc[r.type]||'b-gray')+'">'+r.type+'</span></div><div class="rec-meta">'+fmtDt(r.ts)+' &nbsp;|&nbsp; '+r.nurse+'</div><div class="rec-body">'+r.output+'</div></div>';
+    return '<div class="rec-item"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><span style="font-size:14px;font-weight:500;color:var(--txt)">'+r.patient+'</span><span class="badge '+(tc[r.type]||'b-gray')+'">'+r.type+'</span></div><div class="rec-meta">'+fmtDt(r.ts)+' &nbsp;|&nbsp; '+r.nurse+'</div><div class="rec-body" id="rb-'+r.id+'">'+r.output+'</div><div style="display:flex;gap:6px;margin-top:8px"><button class="copy-btn list-copy-btn" data-rid="'+r.id+'" style="font-size:12px;padding:6px">コピー</button><button class="del-btn list-del-btn" data-rid="'+r.id+'" style="font-size:12px;padding:4px 10px">削除</button></div></div>';
   }).join('');
+  wrap.querySelectorAll('.list-copy-btn').forEach(function(btn){
+    btn.addEventListener('touchend',function(e){e.preventDefault();copyRecord(btn.dataset.rid,btn);});
+    btn.addEventListener('click',function(){copyRecord(btn.dataset.rid,btn);});
+  });
+  wrap.querySelectorAll('.list-del-btn').forEach(function(btn){
+    btn.addEventListener('touchend',function(e){e.preventDefault();deleteRecord(btn.dataset.rid);});
+    btn.addEventListener('click',function(){deleteRecord(btn.dataset.rid);});
+  });
 }
 
 function renderExamples(){
@@ -609,6 +619,31 @@ function deleteExample(id){
   if(!confirm('この学習例を削除しますか？'))return;
   saveExamples(loadExamples().filter(function(e){return e.id!==id;}));
   renderExamples();
+}
+
+function copyRecord(id,btn){
+  var el=document.getElementById('rb-'+id);
+  if(!el)return;
+  var text=el.textContent;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent='コピーしました';btn.className='copy-btn ok';
+      setTimeout(function(){btn.textContent='コピー';btn.className='copy-btn list-copy-btn';},2000);
+    });
+  } else {
+    var ta=document.createElement('textarea');
+    ta.value=text;document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');document.body.removeChild(ta);
+    btn.textContent='コピーしました';btn.className='copy-btn ok';
+    setTimeout(function(){btn.textContent='コピー';btn.className='copy-btn list-copy-btn';},2000);
+  }
+}
+
+function deleteRecord(id){
+  if(!confirm('この記録を削除しますか？'))return;
+  var recs=loadRecords().filter(function(r){return r.id!==id;});
+  saveRecords(recs);
+  renderList();
 }
 
 function renderDict(){
@@ -663,6 +698,11 @@ document.addEventListener('DOMContentLoaded', function(){
   addTap('add-ex-btn', addExample);
   addTap('change-pw-btn', changePassword);
   addTap('add-dict-btn', addDict);
+  addTap('clear-raw-btn', function(){
+    document.getElementById('raw-in').value='';
+    document.getElementById('out-card').style.display='none';
+    document.getElementById('out-text').textContent='';
+  });
 
   document.getElementById('pw-input').addEventListener('keydown',function(e){
     if(e.key==='Enter')tryLogin();
