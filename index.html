@@ -836,10 +836,6 @@ document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('out-text').textContent='';
   });
 
-  document.getElementById('pw-input').addEventListener('keydown',function(e){
-    if(e.key==='Enter')tryLogin();
-  });
-
   document.querySelectorAll('.nav-btn').forEach(function(btn){
     btn.addEventListener('touchend',function(e){e.preventDefault();showScreen(btn.dataset.screen);});
     btn.addEventListener('click',function(){showScreen(btn.dataset.screen);});
