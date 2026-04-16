@@ -10,19 +10,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku
 :root{--bg:#ffffff;--bg2:#f1efe8;--txt:#1a1a1a;--txt2:#5f5e5a;--txt3:#888780;--border:rgba(0,0,0,0.12);--border2:rgba(0,0,0,0.22);--r:8px;--rl:12px}
 #lock-screen{position:fixed;inset:0;background:#f5f5f3;display:flex;align-items:center;justify-content:center;z-index:100}
 .lock-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--rl);padding:2rem 1.75rem;width:100%;max-width:340px;margin:1rem}
-.lock-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:1.75rem}
+.lock-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:1.5rem}
 .lock-logo-icon{width:48px;height:48px;background:#E6F1FB;border-radius:var(--rl);display:flex;align-items:center;justify-content:center}
 .lock-title{font-size:18px;font-weight:500;color:var(--txt)}
-.lock-sub{font-size:13px;color:var(--txt2);margin-bottom:1.5rem;text-align:center;line-height:1.6}
-.lock-input-wrap{position:relative;margin-bottom:1rem}
-.lock-input{width:100%;font-size:15px;padding:10px 40px 10px 12px;border-radius:var(--r);border:0.5px solid var(--border2);background:var(--bg2);color:var(--txt);outline:none;font-family:inherit;letter-spacing:0.1em;-webkit-appearance:none}
-.lock-input:focus{border-color:#185FA5}
-.lock-input.error{border-color:#E24B4A;background:#FCEBEB}
-.eye-btn{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:none;background:none;cursor:pointer;padding:4px;color:var(--txt2);-webkit-appearance:none}
-.lock-btn{width:100%;padding:11px;font-size:15px;font-weight:500;border:none;border-radius:var(--r);background:#185FA5;color:#E6F1FB;cursor:pointer;font-family:inherit;-webkit-appearance:none}
-.lock-btn:active{opacity:0.7}
-.lock-error{font-size:13px;color:#A32D2D;text-align:center;margin-top:10px;min-height:20px}
-.lock-hint{font-size:12px;color:var(--txt3);text-align:center;margin-top:1.25rem}
+.lock-sub{font-size:13px;color:var(--txt2);margin-bottom:1.25rem;text-align:center;line-height:1.6}
+.pattern-dots{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:0 auto 1.25rem;width:220px}
+.pdot{width:56px;height:56px;border-radius:50%;background:var(--bg2);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent;touch-action:none}
+.pdot.active{background:#185FA5;border-color:#185FA5}
+.pdot.active::after{content:'';width:18px;height:18px;border-radius:50%;background:#fff;display:block}
+.pdot:not(.active)::after{content:'';width:10px;height:10px;border-radius:50%;background:var(--border2);display:block}
+.pdot.error{background:#E24B4A;border-color:#E24B4A}
+.pdot.error::after{background:#fff}
+.pattern-preview{display:flex;justify-content:center;gap:6px;margin-bottom:1rem;min-height:16px}
+.pdot-mini{width:10px;height:10px;border-radius:50%;background:var(--border2)}
+.pdot-mini.filled{background:#185FA5}
+.pdot-mini.error{background:#E24B4A}
+.lock-error{font-size:13px;color:#A32D2D;text-align:center;margin-top:4px;min-height:18px}
+.lock-hint{font-size:12px;color:var(--txt3);text-align:center;margin-top:1rem}
+.pattern-svg{position:absolute;top:0;left:0;pointer-events:none;z-index:1}
 #app-body{display:none}
 .app{max-width:640px;margin:0 auto;padding:1.25rem 1rem}
 .app-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
@@ -96,19 +101,34 @@ textarea{width:100%;font-size:14px;padding:10px;border-radius:var(--r);border:0.
       </div>
       <span class="lock-title">訪問看護 業務記録</span>
     </div>
-    <p class="lock-sub">パスワードを入力してください</p>
-    <div class="lock-input-wrap">
-      <input class="lock-input" type="password" id="pw-input" placeholder="パスワード">
-      <button class="eye-btn" id="eye-btn" tabindex="-1">
-        <svg id="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-          <circle cx="12" cy="12" r="3"/>
-        </svg>
-      </button>
+    <p class="lock-sub">パターンをなぞってください</p>
+    <div style="position:relative;width:220px;margin:0 auto">
+      <canvas id="pattern-canvas" width="220" height="220" style="position:absolute;top:0;left:0;pointer-events:none;z-index:0"></canvas>
+      <div class="pattern-dots" id="pattern-dots">
+        <div class="pdot" data-i="0"></div>
+        <div class="pdot" data-i="1"></div>
+        <div class="pdot" data-i="2"></div>
+        <div class="pdot" data-i="3"></div>
+        <div class="pdot" data-i="4"></div>
+        <div class="pdot" data-i="5"></div>
+        <div class="pdot" data-i="6"></div>
+        <div class="pdot" data-i="7"></div>
+        <div class="pdot" data-i="8"></div>
+      </div>
     </div>
-    <button class="lock-btn" id="login-btn">ログイン</button>
+    <div class="pattern-preview" id="pattern-preview">
+      <div class="pdot-mini" id="pm0"></div>
+      <div class="pdot-mini" id="pm1"></div>
+      <div class="pdot-mini" id="pm2"></div>
+      <div class="pdot-mini" id="pm3"></div>
+      <div class="pdot-mini" id="pm4"></div>
+      <div class="pdot-mini" id="pm5"></div>
+      <div class="pdot-mini" id="pm6"></div>
+      <div class="pdot-mini" id="pm7"></div>
+      <div class="pdot-mini" id="pm8"></div>
+    </div>
     <p class="lock-error" id="lock-error"></p>
-    <p class="lock-hint">パスワードを忘れた場合は管理者にお問い合わせください</p>
+    <p class="lock-hint">パターンを忘れた場合は管理者にお問い合わせください</p>
   </div>
 </div>
 
@@ -204,12 +224,15 @@ textarea{width:100%;font-size:14px;padding:10px;border-radius:var(--r);border:0.
 
     <!-- マスタ管理 -->
     <div id="screen-master" class="screen">
-      <div class="section-title">パスワード変更</div>
+      <div class="section-title">パターン変更</div>
       <div class="pw-change-form">
-        <div style="margin-bottom:8px"><div class="lbl">現在のパスワード</div><input type="password" id="pw-old" style="width:100%"></div>
-        <div style="margin-bottom:8px"><div class="lbl">新しいパスワード</div><input type="password" id="pw-new" style="width:100%"></div>
-        <div style="margin-bottom:12px"><div class="lbl">新しいパスワード（確認）</div><input type="password" id="pw-new2" style="width:100%"></div>
-        <button class="btn-primary" id="change-pw-btn">パスワードを変更</button>
+        <div style="font-size:12px;color:var(--txt2);margin-bottom:10px;line-height:1.7">
+          ドット番号：左上から右へ順に 0〜8<br>
+          <span style="letter-spacing:2px;font-family:monospace">0 1 2 / 3 4 5 / 6 7 8</span>
+        </div>
+        <div style="margin-bottom:8px"><div class="lbl">現在のパターン（例：0,1,2,4,7）</div><input type="text" id="pw-old" placeholder="0,1,4,7,6" style="width:100%"></div>
+        <div style="margin-bottom:12px"><div class="lbl">新しいパターン（3点以上）</div><input type="text" id="pw-new" placeholder="例：2,5,8,7,6" style="width:100%"></div>
+        <button class="btn-primary" id="change-pw-btn">パターンを変更</button>
         <p id="pw-change-msg" style="font-size:13px;margin-top:8px;min-height:18px"></p>
       </div>
       <div class="master-section">
@@ -314,55 +337,156 @@ function fmtDt(d){
   return dt.getFullYear()+'/'+String(dt.getMonth()+1).padStart(2,'0')+'/'+String(dt.getDate()).padStart(2,'0')+' '+String(dt.getHours()).padStart(2,'0')+':'+String(dt.getMinutes()).padStart(2,'0');
 }
 
-/* ===== ロック ===== */
-function tryLogin(){
-  const input=document.getElementById('pw-input');
-  const errEl=document.getElementById('lock-error');
-  if(input.value===getPassword()){
-    document.getElementById('lock-screen').style.display='none';
-    document.getElementById('app-body').style.display='block';
-    input.value='';
-    errEl.textContent='';
-    populateSelects();
-    document.getElementById('dt-disp').value=fmtDt(new Date());
-  } else {
-    input.classList.add('error');
-    errEl.textContent='パスワードが違います。管理者にご確認ください。';
-    setTimeout(function(){input.classList.remove('error');},1000);
-    input.value='';
-    input.focus();
+/* ===== パターンロック ===== */
+var patternSeq=[];
+var patternDrawing=false;
+var patternCanvas,patternCtx;
+var DOT_POSITIONS=[];
+
+function getDefaultPattern(){return localStorage.getItem(PW_KEY)||'0,1,2,4,7';}
+
+function initPattern(){
+  patternCanvas=document.getElementById('pattern-canvas');
+  patternCtx=patternCanvas.getContext('2d');
+  var dots=document.querySelectorAll('.pdot');
+  DOT_POSITIONS=[];
+  dots.forEach(function(d){
+    var r=d.getBoundingClientRect();
+    var pr=patternCanvas.getBoundingClientRect();
+    DOT_POSITIONS.push({x:r.left-pr.left+r.width/2, y:r.top-pr.top+r.height/2});
+  });
+}
+
+function drawLines(seq,color){
+  patternCtx.clearRect(0,0,220,220);
+  if(seq.length<2)return;
+  patternCtx.strokeStyle=color||'#185FA5';
+  patternCtx.lineWidth=3;
+  patternCtx.lineCap='round';
+  patternCtx.lineJoin='round';
+  patternCtx.globalAlpha=0.5;
+  patternCtx.beginPath();
+  patternCtx.moveTo(DOT_POSITIONS[seq[0]].x,DOT_POSITIONS[seq[0]].y);
+  for(var i=1;i<seq.length;i++){
+    patternCtx.lineTo(DOT_POSITIONS[seq[i]].x,DOT_POSITIONS[seq[i]].y);
   }
+  patternCtx.stroke();
+  patternCtx.globalAlpha=1;
+}
+
+function getDotAtPoint(x,y){
+  var canvas=patternCanvas.getBoundingClientRect();
+  var cx=x-canvas.left, cy=y-canvas.top;
+  for(var i=0;i<DOT_POSITIONS.length;i++){
+    var d=DOT_POSITIONS[i];
+    if(Math.sqrt((cx-d.x)*(cx-d.x)+(cy-d.y)*(cy-d.y))<30) return i;
+  }
+  return -1;
+}
+
+function startPattern(e){
+  e.preventDefault();
+  initPattern();
+  patternSeq=[];
+  patternDrawing=true;
+  document.querySelectorAll('.pdot').forEach(function(d){d.classList.remove('active','error');});
+  for(var i=0;i<9;i++){var m=document.getElementById('pm'+i);if(m){m.className='pdot-mini';}}
+  document.getElementById('lock-error').textContent='';
+  patternCtx.clearRect(0,0,220,220);
+  var pt=e.touches?e.touches[0]:e;
+  var idx=getDotAtPoint(pt.clientX,pt.clientY);
+  if(idx>=0)addDot(idx);
+}
+
+function movePattern(e){
+  if(!patternDrawing)return;
+  e.preventDefault();
+  var pt=e.touches?e.touches[0]:e;
+  var idx=getDotAtPoint(pt.clientX,pt.clientY);
+  if(idx>=0&&patternSeq.indexOf(idx)<0) addDot(idx);
+  drawLines(patternSeq,'#185FA5');
+  if(patternSeq.length>0){
+    var canvas=patternCanvas.getBoundingClientRect();
+    var last=DOT_POSITIONS[patternSeq[patternSeq.length-1]];
+    patternCtx.clearRect(0,0,220,220);
+    drawLines(patternSeq,'#185FA5');
+    patternCtx.strokeStyle='#185FA5';
+    patternCtx.lineWidth=3;
+    patternCtx.globalAlpha=0.3;
+    patternCtx.beginPath();
+    patternCtx.moveTo(last.x,last.y);
+    patternCtx.lineTo(pt.clientX-canvas.left,pt.clientY-canvas.top);
+    patternCtx.stroke();
+    patternCtx.globalAlpha=1;
+  }
+}
+
+function addDot(idx){
+  patternSeq.push(idx);
+  document.querySelector('.pdot[data-i="'+idx+'"]').classList.add('active');
+  var m=document.getElementById('pm'+idx);
+  if(m){m.className='pdot-mini filled';}
+}
+
+function endPattern(e){
+  if(!patternDrawing)return;
+  patternDrawing=false;
+  if(patternSeq.length<3){
+    showPatternError('3点以上なぞってください');
+    return;
+  }
+  var input=patternSeq.join(',');
+  if(input===getDefaultPattern()){
+    drawLines(patternSeq,'#0F6E56');
+    setTimeout(function(){
+      document.getElementById('lock-screen').style.display='none';
+      document.getElementById('app-body').style.display='block';
+      document.getElementById('lock-error').textContent='';
+      patternCtx.clearRect(0,0,220,220);
+      document.querySelectorAll('.pdot').forEach(function(d){d.classList.remove('active','error');});
+      for(var i=0;i<9;i++){var m=document.getElementById('pm'+i);if(m)m.className='pdot-mini';}
+      populateSelects();
+      document.getElementById('dt-disp').value=fmtDt(new Date());
+    },300);
+  } else {
+    showPatternError('パターンが違います。管理者にご確認ください。');
+  }
+}
+
+function showPatternError(msg){
+  drawLines(patternSeq,'#E24B4A');
+  document.querySelectorAll('.pdot').forEach(function(d){if(d.classList.contains('active')){d.classList.remove('active');d.classList.add('error');}});
+  for(var i=0;i<9;i++){var m=document.getElementById('pm'+i);if(m&&m.classList.contains('filled')){m.className='pdot-mini error';}}
+  document.getElementById('lock-error').textContent=msg;
+  setTimeout(function(){
+    patternCtx.clearRect(0,0,220,220);
+    document.querySelectorAll('.pdot').forEach(function(d){d.classList.remove('active','error');});
+    for(var i=0;i<9;i++){var m=document.getElementById('pm'+i);if(m)m.className='pdot-mini';}
+    document.getElementById('lock-error').textContent='';
+    patternSeq=[];
+  },1200);
 }
 
 function lockApp(){
   document.getElementById('app-body').style.display='none';
   document.getElementById('lock-screen').style.display='flex';
-  document.getElementById('pw-input').focus();
-}
-
-let pwVisible=false;
-function togglePw(){
-  pwVisible=!pwVisible;
-  const input=document.getElementById('pw-input');
-  input.type=pwVisible?'text':'password';
-  document.getElementById('eye-icon').innerHTML=pwVisible
-    ?'<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>'
-    :'<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+  setTimeout(initPattern,100);
 }
 
 function changePassword(){
-  const old=document.getElementById('pw-old').value;
-  const nw=document.getElementById('pw-new').value;
-  const nw2=document.getElementById('pw-new2').value;
-  const msg=document.getElementById('pw-change-msg');
-  if(old!==getPassword()){msg.style.color='#A32D2D';msg.textContent='現在のパスワードが違います。';return;}
-  if(nw.length<4){msg.style.color='#A32D2D';msg.textContent='新しいパスワードは4文字以上にしてください。';return;}
-  if(nw!==nw2){msg.style.color='#A32D2D';msg.textContent='新しいパスワードが一致しません。';return;}
-  localStorage.setItem(PW_KEY,nw);
+  var cur=document.getElementById('pw-old').value.trim();
+  var nw=document.getElementById('pw-new').value.trim();
+  var msg=document.getElementById('pw-change-msg');
+  if(!cur||!nw){msg.style.color='#A32D2D';msg.textContent='入力してください（例：0,1,2,4,7）';return;}
+  if(cur!==getDefaultPattern()){msg.style.color='#A32D2D';msg.textContent='現在のパターンが違います。';return;}
+  var parts=nw.split(',').map(function(x){return parseInt(x.trim());});
+  if(parts.length<3||parts.some(function(x){return isNaN(x)||x<0||x>8;})){
+    msg.style.color='#A32D2D';msg.textContent='新しいパターンは0〜8の番号を3つ以上カンマ区切りで入力してください。';return;
+  }
+  localStorage.setItem(PW_KEY,parts.join(','));
   document.getElementById('pw-old').value='';
   document.getElementById('pw-new').value='';
-  document.getElementById('pw-new2').value='';
-  msg.style.color='#0F6E56';msg.textContent='パスワードを変更しました。';
+  msg.style.color='#0F6E56';msg.textContent='パターンを変更しました。';
   setTimeout(function(){msg.textContent='';},3000);
 }
 
@@ -687,9 +811,17 @@ document.addEventListener('DOMContentLoaded', function(){
     el.addEventListener('click',fn);
   }
 
-  addTap('login-btn', tryLogin);
-  addTap('eye-btn', togglePw);
   addTap('lock-btn', lockApp);
+
+  var pdots=document.getElementById('pattern-dots');
+  pdots.addEventListener('touchstart',startPattern,{passive:false});
+  pdots.addEventListener('touchmove',movePattern,{passive:false});
+  pdots.addEventListener('touchend',endPattern,{passive:false});
+  pdots.addEventListener('mousedown',startPattern);
+  document.addEventListener('mousemove',function(e){if(patternDrawing)movePattern(e);});
+  document.addEventListener('mouseup',function(e){if(patternDrawing)endPattern(e);});
+
+  setTimeout(initPattern,200);
   addTap('mic-btn', toggleMic);
   addTap('convert-btn', convertText);
   addTap('copy-btn', copyOut);
@@ -722,7 +854,6 @@ document.addEventListener('DOMContentLoaded', function(){
   document.getElementById('f-patient').addEventListener('change',renderList);
   document.getElementById('f-type').addEventListener('change',renderList);
 
-  document.getElementById('pw-input').focus();
 });
 </script>
 </body>
