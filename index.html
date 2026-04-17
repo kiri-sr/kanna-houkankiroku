@@ -282,7 +282,7 @@ const DICT_KEY='nrs_dict_v5';
 const DEFAULT_PW='kango1234';
 
 const defaultMaster={
-  nurses:['山本 看護師','田中 看護師','鈴木 看護師'],
+  nurses:['富松','渡辺','加藤（看護）','白木','那須野','清水','近藤','前手','水野','高橋','山口','桐山','加藤（リハビリ）'],
   patients:['田中 花子 様','山田 太郎 様','佐藤 幸子 様'],
   types:['身体介護','生活援助','医療処置','リハビリ','バイタル確認']
 };
@@ -835,6 +835,7 @@ document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('out-card').style.display='none';
     document.getElementById('out-text').textContent='';
   });
+
 
   document.querySelectorAll('.nav-btn').forEach(function(btn){
     btn.addEventListener('touchend',function(e){e.preventDefault();showScreen(btn.dataset.screen);});
